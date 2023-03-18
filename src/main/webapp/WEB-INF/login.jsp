@@ -18,29 +18,34 @@
             border-radius: 10px;
             width: 100%;
         }
+        .log{
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Log In</h1>
-        <p><c:out value="${error}"/></p>
-        <form method="post" action="/login">
-            <table>
-                <tr>
-                    <td><label type="email" for="email">Email</label></td>
-                    <td><input type="text" id="email" name="email" class="form-control" placeholder="email"/></td>
-                </tr>
-                <tr>
-                    <td><label for="password">Password</label></td>
-                    <td><input type="password" id="password" name="password" class="form-control" placeholder="password"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" class="btn btn-primary" value="Log In"/></td>
-                </tr>
-            </table>
-        </form>
-        <a href="/">Register</a>
+    <div class="container d-flex justify-content-center">
+        <div class="log">
+            <h1>Log In</h1>
+            <p><c:out value="${error}"/></p>
+            <form method="post" action="/login">
+                <table>
+                    <tr>
+                        <td><label type="email" for="email">Email</label></td>
+                        <td><input type="text" id="email" name="email" class="form-control" placeholder="email"/></td>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password</label></td>
+                        <td><input type="password" id="password" name="password" class="form-control" placeholder="password"/></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" class="btn btn-primary" value="Log In"/></td>
+                    </tr>
+                </table>
+            </form>
+            <a href="/">Register</a>
+        </div>
     </div>
 
 </body>

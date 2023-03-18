@@ -20,7 +20,7 @@
 <body>
 <div class="container">
     <h1>Hello, <c:out value="${user.fullName}"/></h1>
-    <form:form method="POST" action="/posts/new" modelAttribute="post">
+    <form:form method="POST" action="/posts/save" modelAttribute="post">
         <table>
             <tr>
                 <td><form:label path="headline">Headline:</form:label></td>

@@ -18,50 +18,55 @@
             border-radius: 10px;
             width: 100%;
         }
+        .form {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Register</h1>
-    <%--        <p><form:errors path="user.*"/></p>--%>
-    <%--@elvariable id="user" type="java"--%>
-    <form:form method="POST" action="/register" modelAttribute="user">
-        <table>
-            <tr>
-                <td><form:label path="fullName">Full Name:</form:label></td>
-                <td>
-                    <form:input type="text" path="fullName" class="form-control" placeholder="Enter full name.."/>
-                    <form:errors path="fullName" cssStyle="color: red"/>
-                </td>
-            </tr>
-            <tr>
-                <td><form:label path="email">Email:</form:label></td>
-                <td>
-                    <form:input type="email" path="email" class="form-control" placeholder="Enter email.."/>
-                    <form:errors path="email" cssStyle="color: red"/>
-                </td>
-            </tr>
-            <tr>
-                <td><form:label path="password">Password:</form:label></td>
-                <td>
-                    <form:password path="password" class="form-control" placeholder="Enter password.."/>
-                    <form:errors path="password" cssStyle="color: red"/>
-                </td>
-            </tr>
-            <tr>
-                <td><form:label path="confirmPassword">Confirm Password:</form:label></td>
-                <td>
-                    <form:password path="confirmPassword" class="form-control" placeholder="Again password.."/>
-                    <form:errors path="confirmPassword" cssStyle="color: red"/>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" class="btn btn-info" value="Register"/></td>
-            </tr>
-        </table>
-    </form:form>
-    <a href="/login">Log In</a>
+<div class="container d-flex justify-content-center">
+    <div class="form">
+        <h1>Register</h1>
+        <%--        <p><form:errors path="user.*"/></p>--%>
+        <%--@elvariable id="user" type="java"--%>
+        <form:form method="POST" action="/register" modelAttribute="user">
+            <table>
+                <tr>
+                    <td><form:label path="fullName">Full Name:</form:label></td>
+                    <td>
+                        <form:input type="text" path="fullName" class="form-control" placeholder="Enter full name.."/>
+                        <form:errors path="fullName" cssStyle="color: red"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><form:label path="email">Email:</form:label></td>
+                    <td>
+                        <form:input type="email" path="email" class="form-control" placeholder="Enter email.."/>
+                        <form:errors path="email" cssStyle="color: red"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><form:label path="password">Password:</form:label></td>
+                    <td>
+                        <form:password path="password" class="form-control" placeholder="Enter password.."/>
+                        <form:errors path="password" cssStyle="color: red"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><form:label path="confirmPassword">Confirm Password:</form:label></td>
+                    <td>
+                        <form:password path="confirmPassword" class="form-control" placeholder="Again password.."/>
+                        <form:errors path="confirmPassword" cssStyle="color: red"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" class="btn btn-info" value="Register"/></td>
+                </tr>
+            </table>
+        </form:form>
+        <a href="/login">Log In</a>
+    </div>
 </div>
 </body>
 </html>

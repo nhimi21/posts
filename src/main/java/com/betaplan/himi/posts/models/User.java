@@ -30,6 +30,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "post_id"))
     private List<Post> postLiked;
 
+
     public User() {
     }
     public User(Long id,

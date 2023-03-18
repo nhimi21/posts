@@ -28,17 +28,25 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> userLikes;
 
+    @ManyToOne
+    private User userID;
+
     public Post() {
     }
 
-    public Post(Long id, String headline, String description,User creator,Integer nrOfLikes, List<User> userLikes, Date createdAt, Date updatedAt) {
+    public Post(
+            Long id,
+            String headline,
+            String description,
+            Integer nrOfLikes,
+            List<User> userLikes,
+            User userID) {
         this.id = id;
         this.headline = headline;
         this.description = description;
         this.nrOfLikes = nrOfLikes;
         this.userLikes = userLikes;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.userID = userID;
     }
 
     public List<User> getUserLikes() {
@@ -89,4 +97,6 @@ public class Post {
     protected void onUpdate(){
         this.updatedAt = new Date();
     }
+
+
 }

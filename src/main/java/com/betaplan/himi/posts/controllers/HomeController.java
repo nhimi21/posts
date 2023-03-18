@@ -19,7 +19,10 @@ public class HomeController {
     private final UserValidator userValidator;
     private final PostService postService;
 
-    public HomeController(UserService userService, UserValidator userValidator, PostService postService) {
+    public HomeController(
+            UserService userService,
+            UserValidator userValidator,
+            PostService postService) {
         this.userService = userService;
         this.userValidator = userValidator;
         this.postService = postService;
@@ -31,7 +34,8 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session) {
+    public String registerUser(@Valid @ModelAttribute("user") User user,
+                               BindingResult result, HttpSession session) {
         userValidator.validate(user, result);
         if (result.hasErrors()) {
             return "register";
@@ -43,7 +47,7 @@ public class HomeController {
     }
 
     @GetMapping("/login")
-    public String logIn(Model model) {
+    public String logIn() {
         return "login";
     }
 
@@ -68,31 +72,28 @@ public class HomeController {
         Long userId = (Long) session.getAttribute("userId");
         User u = userService.findUserById(userId);
         model.addAttribute("user", u);
-        model.addAttribute("posts", this.postService.findAllPosts());
+        model.addAttribute("posts", postService.findAllPosts());
         return "index";
     }
 
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @GetMapping("/posts/new")
-    public String newPost(HttpSession session, Model model) {
-        Long userId = (Long) session.getAttribute("userId");
-        User u = userService.findUserById(userId);
-        model.addAttribute("user", u);
+    public String newPost(Model model) {
         model.addAttribute("post", new Post());
         return "posts";
     }
 
-    @PostMapping("/posts/new")
+    @PostMapping("/posts/save")
     public String addPost(@Valid @ModelAttribute("post") Post post, BindingResult result) {
         if (result.hasErrors()) {
             return "posts";
         }
-        this.postService.createPost(post);
+        postService.createPost(post);
         return "redirect:/posts";
     }
 
