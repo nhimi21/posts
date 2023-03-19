@@ -14,34 +14,39 @@ public class PostService {
 
     private final UserRepository userRepository;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(
+            PostRepository postRepository,
+            UserRepository userRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
     }
 
     //Create new post and edit or update
     public void createPost(Post post, Long id){
-
-        User u = userRepository.findById(id).orElseThrow(null);
+        User u = userRepository
+                .findById(id).orElseThrow(null);
         post.setUserID(u);
         postRepository.save(post);
     }
 
     public void updatePost(Post post, Long id){
-        User u = userRepository.findById(id).orElseThrow(null);
-        Post result = postRepository.findById(post.getId()).orElseThrow(null);
+        User u = userRepository
+                .findById(id).orElseThrow(null);
+        Post result = postRepository
+                .findById(post.getId()).orElseThrow(null);
         Long userId = result.getUserID().getId();
         if (u.getId() != userId)
             throw new RuntimeException("You aren`t author for edit this post!");
         else
             postRepository.save(post);
     }
-    //Find all Posts in yor db table
+
+    //Find all Posts
     public List<Post> findAllPosts(){
         List<Post> list = postRepository.findAll();
-        for (Post p: list){
-            if (p.getNrOfLikes() == null){
-                p.setNrOfLikes(0);
+        for (Post post: list){
+            if (post.getNrOfLikes() == null){
+                post.setNrOfLikes(0);
             }
         }
         return list;
@@ -55,7 +60,8 @@ public class PostService {
     //Delete one post by id
     public void deletePost(Long id, Long userId) {
         boolean exists = postRepository.existsById(id);
-        User u = userRepository.findById(userId).orElseThrow(null);
+        User u = userRepository
+                .findById(userId).orElseThrow(null);
         Post post = new Post();
         if (exists){
             post = postRepository.findById(id).orElseThrow(null);
@@ -69,17 +75,43 @@ public class PostService {
     }
 
     //like a Post
-    public void likePost(User user,Post post){
-        List<User> userWhoLiked = post.getUserLikes();
-        userWhoLiked.add(user);
-        this.postRepository.save(post);
+    public void likePost(Long postID, Long sessionID){
+
+        User user = userRepository
+                .findById(sessionID).orElse(null);
+        Post post = postRepository
+                .findById(postID).orElse(null);
+
+        int num = 0;
+        if (post != null){
+
+            List<User> userWhoLiked = post.getUserLikes();
+            userWhoLiked.add(user);
+
+            num = post.getUserLikes().size();
+            post.setNrOfLikes(num);
+
+            postRepository.save(post);
+        }
     }
 
     //unlike a Post
-    public void unlikePost(User user,Post post){
-        List<User> userWhoLiked = post.getUserLikes();
-        userWhoLiked.remove(user);
-        this.postRepository.save(post);
+    public void unlikePost(Long postID, Long sessionID){
+        User user = userRepository
+                .findById(sessionID).orElse(null);
+        Post post = postRepository
+                .findById(postID).orElse(null);
+        int num = 0;
+        if (post != null){
+
+            List<User> userWhoLiked = post.getUserLikes();
+            userWhoLiked.remove(user);
+
+            num = post.getUserLikes().size();
+            post.setNrOfLikes(num);
+
+            postRepository.save(post);
+        }
     }
 
 }

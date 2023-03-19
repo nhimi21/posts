@@ -12,37 +12,48 @@
             border: 1px solid black;
         }
         .btn{
+            margin-top: 10px;
             border-radius: 10px;
             width: 100%;
         }
+        .new{
+             margin-top: 20px;
+        }
+        .new h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Hello, <c:out value="${user.fullName}"/></h1>
-    <form:form method="POST" action="/posts/save" modelAttribute="post">
-        <table>
-            <tr>
-                <td><form:label path="headline">Headline:</form:label></td>
-                <td>
-                    <form:input type="text" path="headline" class="form-control"/>
-                    <form:errors path="headline" cssStyle="color: red"/>
-                </td>
-            </tr>
-            <tr>
-                <td><form:label path="description">Description:</form:label></td>
-                <td>
-                    <form:textarea type="text" path="description" class="form-control"/>
-                    <form:errors path="description" cssStyle="color: red"/>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" class="btn btn-info" value="Post"/></td>
-            </tr>
-        </table>
-    </form:form>
-    <a href="/posts">Back</a>
+<div class="container d-flex justify-content-center">
+    <div class="new">
+        <h2>New Post</h2>
+        <form:form method="POST" action="/post/save" modelAttribute="post">
+            <table>
+                <tr>
+                    <td><form:label path="headline">Headline:</form:label></td>
+                    <td>
+                        <form:input type="text" path="headline" class="form-control"/>
+                        <form:errors path="headline" cssStyle="color: red"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><form:label path="description">Description:</form:label></td>
+                    <td>
+                        <form:textarea type="text" path="description" class="form-control"/>
+                        <form:errors path="description" cssStyle="color: red"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" class="btn btn-info" value="Add"/></td>
+                </tr>
+            </table>
+        </form:form>
+        <a href="/posts">Back</a>
+    </div>
 </div>
 </body>
 </html>

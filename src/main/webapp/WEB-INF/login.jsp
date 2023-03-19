@@ -28,7 +28,7 @@
         <div class="log">
             <h1>Log In</h1>
             <p><c:out value="${error}"/></p>
-            <form method="post" action="/login">
+            <form method="post" action="/auth">
                 <table>
                     <tr>
                         <td><label type="email" for="email">Email</label></td>

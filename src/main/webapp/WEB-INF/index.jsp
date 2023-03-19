@@ -8,7 +8,6 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Posts</title>
-
 </head>
 <body>
 <div class="container">
@@ -26,15 +25,24 @@
         <tbody>
         <c:forEach items="${posts}" var="post">
             <tr>
-                <td><a href="/posts/details/${post.id}">${post.headline}</a></td>
+                <td><a href="/post/${post.id}/details">${post.headline}</a></td>
                 <td>${post.description}</td>
                 <td>${post.nrOfLikes}</td>
-                <td><a href="/post/${post.id}">edit</a></td>
+                <td>
+                    <c:choose>
+                        <c:when test="${post.userID == user}">
+                            <a href="/post/${post.id}">edit</a>
+                        </c:when>
+                        <c:otherwise>
+                            <span>Created by ${post.userID.fullName} </span>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-    <a href="/posts/new">New Post</a>
+    <a href="/new">New Post</a>
 </div>
 </body>
 </html>

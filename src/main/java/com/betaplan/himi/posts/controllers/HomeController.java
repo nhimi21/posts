@@ -29,12 +29,12 @@ public class HomeController {
         this.postService = postService;
     }
 
-    @GetMapping("/")
+    @GetMapping(value = "/")
     public String index(@ModelAttribute("user") User user) {
         return "register";
     }
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register")
     public String registerUser(@Valid @ModelAttribute("user") User user,
                                BindingResult result, HttpSession session) {
         userValidator.validate(user, result);
@@ -47,16 +47,15 @@ public class HomeController {
         return "redirect:/posts";
     }
 
-    @GetMapping("/login")
+    @GetMapping(value = "/login")
     public String logIn() {
         return "login";
     }
 
-    @PostMapping(value = "/login")
-    public String loginUser(@RequestParam("email") String email,
-                            @RequestParam("password") String password,
-                            Model model,
-                            HttpSession session) {
+    @PostMapping(value = "/auth")
+    public String loginUser(@RequestParam(name = "email") String email,
+                            @RequestParam(name = "password") String password,
+                            Model model, HttpSession session) {
         boolean isAuthenticated = userService.authenticateUser(email, password);
         if (isAuthenticated) {
             User user = userService.findByEmail(email);
@@ -68,7 +67,7 @@ public class HomeController {
         }
     }
 
-    @GetMapping("/posts")
+    @GetMapping(value = "/posts")
     public String home(HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("userId");
         User u = userService.findUserById(userId);
@@ -78,19 +77,19 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/logout")
+    @GetMapping(value = "/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
     }
 
-    @GetMapping("/posts/new")
+    @GetMapping(value = "/new")
     public String newPost(Model model) {
         model.addAttribute("post", new Post());
         return "posts";
     }
 
-    @PostMapping("/posts/save")
+    @PostMapping(value = "/post/save")
     public String addPost(
             @Valid @ModelAttribute("post") Post post,
             HttpSession session, BindingResult result) {
@@ -103,13 +102,14 @@ public class HomeController {
         return "redirect:/posts";
     }
 
-    @GetMapping("/post/{id}")
+    @GetMapping(value = "/post/{id}")
     public String editPost(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("post", postService.findByIdPost(id));
+        Post post = postService.findByIdPost(id);
+        model.addAttribute("post", post);
         return "edit";
     }
 
-    @PutMapping("/post/{id}/edit")
+    @PutMapping(value = "/post/{id}/edit")
     public String update(@Valid @ModelAttribute("post") Post post,
                          HttpSession session, BindingResult result) {
         if (result.hasErrors()) {
@@ -121,30 +121,39 @@ public class HomeController {
         }
     }
 
-   @DeleteMapping("/post/{id}/delete")
+   @DeleteMapping(value = "/post/{id}/delete")
     public String deletePost(HttpSession session, @PathVariable("id") Long id){
        Long userId = (Long) session.getAttribute("userId");
        postService.deletePost(id, userId);
        return "redirect:/posts";
    }
 
-   @GetMapping("/posts/details/{id}")
-    public String showPost(@PathVariable("id") Long id,Model model){
-        model.addAttribute("post", this.postService.findByIdPost(id));
+   @GetMapping(value = "/post/{id}/details")
+    public String showPost(
+            @PathVariable("id") Long id,
+            HttpSession session, Model model){
+
+        Post post = postService.findByIdPost(id);
+        Long sessionID = (Long) session.getAttribute("userId");
+        User user = userService.findUserById(sessionID);
+
+        model.addAttribute("user", user);
+        model.addAttribute("post", post);
+
         return "details";
     }
-    @GetMapping("/like/{id}")
+
+    @GetMapping(value = "/like/{id}")
     public String like(@PathVariable("id")Long id, HttpSession session){
-        User userToLikePost = this.userService.findUserById((Long) session.getAttribute("userId"));
-        Post postToLike = this.postService.findByIdPost(id);
-        this.postService.likePost(userToLikePost,postToLike);
-    return "redirect:/posts/details/{id}";
+        Long sessionID = (Long) session.getAttribute("userId");
+        postService.likePost(id, sessionID);
+        return "redirect:/post/{id}/details";
     }
-    @GetMapping("/unlike/{id}")
+
+    @GetMapping(value = "/unlike/{id}")
     public String unlike(@PathVariable("id")Long id, HttpSession session){
-        User userToLikePost = this.userService.findUserById((Long) session.getAttribute("userId"));
-        Post postToUnlike = this.postService.findByIdPost(id);
-        this.postService.unlikePost(userToLikePost, postToUnlike);
-        return "redirect:/posts/details/{id}";
+        Long sessionID = (Long) session.getAttribute("userId");
+        postService.unlikePost(id, sessionID);
+        return "redirect:/post/{id}/details";
     }
 }
