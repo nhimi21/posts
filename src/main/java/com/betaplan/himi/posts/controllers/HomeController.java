@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -67,16 +68,17 @@ public class HomeController {
         }
     }
 
-    @RequestMapping("/posts")
+    @GetMapping("/posts")
     public String home(HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("userId");
         User u = userService.findUserById(userId);
         model.addAttribute("user", u);
-        model.addAttribute("posts", postService.findAllPosts());
+        List<Post> postList = postService.findAllPosts();
+        model.addAttribute("posts", postList);
         return "index";
     }
 
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
@@ -89,34 +91,43 @@ public class HomeController {
     }
 
     @PostMapping("/posts/save")
-    public String addPost(@Valid @ModelAttribute("post") Post post, BindingResult result) {
+    public String addPost(
+            @Valid @ModelAttribute("post") Post post,
+            HttpSession session, BindingResult result) {
         if (result.hasErrors()) {
             return "posts";
         }
-        postService.createPost(post);
+        Long userId = (Long) session.getAttribute("userId");
+        postService.createPost(post, userId);
+
         return "redirect:/posts";
     }
 
-    @GetMapping("/posts/{id}/edit")
+    @GetMapping("/post/{id}")
     public String editPost(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("post", this.postService.findByIdPost(id));
+        model.addAttribute("post", postService.findByIdPost(id));
         return "edit";
     }
 
-    @PutMapping("/posts/{id}/edit")
-    public String update(@Valid @ModelAttribute("post") Post post, BindingResult result) {
+    @PutMapping("/post/{id}/edit")
+    public String update(@Valid @ModelAttribute("post") Post post,
+                         HttpSession session, BindingResult result) {
         if (result.hasErrors()) {
             return "edit";
         } else {
-            this.postService.createPost(post);
+            Long userId = (Long) session.getAttribute("userId");
+            postService.updatePost(post, userId);
             return "redirect:/posts";
         }
     }
-   @DeleteMapping("/posts/{id}/edit")
-    public String deletePost(@PathVariable("id") Long id){
-       this.postService.deletePost(id);
+
+   @DeleteMapping("/post/{id}/delete")
+    public String deletePost(HttpSession session, @PathVariable("id") Long id){
+       Long userId = (Long) session.getAttribute("userId");
+       postService.deletePost(id, userId);
        return "redirect:/posts";
    }
+
    @GetMapping("/posts/details/{id}")
     public String showPost(@PathVariable("id") Long id,Model model){
         model.addAttribute("post", this.postService.findByIdPost(id));

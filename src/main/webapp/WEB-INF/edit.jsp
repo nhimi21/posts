@@ -19,7 +19,7 @@
 
 <div class="container">
     <h3>Edit Post</h3>
-    <form:form method="POST" action="/posts/${post.id}/edit" modelAttribute="post">
+    <form:form method="POST" action="/post/${post.id}/edit" modelAttribute="post">
         <input type="hidden" name="_method" value="put">
         <table>
             <tr>
@@ -39,7 +39,7 @@
         </table>
         <input type="submit" class="btn btn-primary" value="Edit"/>
     </form:form>
-    <form action="/posts/${post.id}/edit" method="post">
+    <form action="/post/${post.id}/delete" method="post">
         <input type="submit" class="btn btn-danger" value="Delete"/>
         <input type="hidden" name="_method" value="delete">
         <a href="/posts">Back</a>

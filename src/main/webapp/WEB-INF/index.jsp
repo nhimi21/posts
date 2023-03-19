@@ -27,9 +27,9 @@
         <c:forEach items="${posts}" var="post">
             <tr>
                 <td><a href="/posts/details/${post.id}">${post.headline}</a></td>
-                <td>${post.description }</td>
-                <td></td>
-                <td><a href="/posts/${post.id}/edit">edit</a> | <a href="/posts/${post.id}/edit">delete</a> </td>
+                <td>${post.description}</td>
+                <td>${post.nrOfLikes}</td>
+                <td><a href="/post/${post.id}">edit</a></td>
             </tr>
         </c:forEach>
         </tbody>

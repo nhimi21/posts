@@ -21,6 +21,7 @@ public class Post {
     private Integer nrOfLikes;
     @Column(updatable=false)
     private Date createdAt;
+    @Column(updatable=false)
     private Date updatedAt;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "likes",
@@ -89,6 +90,14 @@ public class Post {
         this.nrOfLikes = nrOfLikes;
     }
 
+    public User getUserID() {
+        return userID;
+    }
+
+    public void setUserID(User userID) {
+        this.userID = userID;
+    }
+
     @PrePersist
     protected void onCreate(){
         this.createdAt = new Date();
@@ -97,6 +106,5 @@ public class Post {
     protected void onUpdate(){
         this.updatedAt = new Date();
     }
-
 
 }

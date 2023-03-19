@@ -23,13 +23,13 @@ public class User {
     private String confirmPassword;
     @Column(updatable=false)
     private Date createdAt;
+    @Column(updatable=false)
     private Date updatedAt;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "likes",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "post_id"))
     private List<Post> postLiked;
-
 
     public User() {
     }
@@ -38,17 +38,13 @@ public class User {
                 String email,
                 String password,
                 String confirmPassword,
-                List<Post> postLiked,
-                Date createdAt,
-                Date updatedAt) {
+                List<Post> postLiked) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.postLiked = postLiked;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public List<Post> getPostLiked() {
@@ -107,4 +103,5 @@ public class User {
     protected void onUpdate(){
         this.updatedAt = new Date();
     }
+
 }
